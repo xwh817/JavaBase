@@ -41,16 +41,17 @@ public class SetTest {
 		 * 3. 只有equals和hashCode都相等的时候，HashMap\HashTable\Set这样的集合才认为他们是同一个对象。
 		 */
 		
-		/*MyObj obj1 = new MyObj("xwh", 817);
-		MyObj obj2 = new MyObj("dh", 817);
-		System.out.println("hashCode:"+obj1.hashCode()+","+obj2.hashCode());
-		System.out.println("==:"+(obj1==obj2));
-		System.out.println("equals:"+obj1.equals(obj2));	
+		MyObj myObj1 = new MyObj("xwh", 817);
+		MyObj myObj2 = new MyObj("dh", 817);
+		System.out.println("\nhashCode:"+myObj1.hashCode()+","+myObj2.hashCode());
+		System.out.println("==:"+(myObj1==myObj2));
+		System.out.println("equals:"+myObj1.equals(myObj2));	
 
-		set.add(obj1);
-		set.add(obj2);
+		set.clear();
+		set.add(myObj1);
+		set.add(myObj2);
 		
-		System.out.println("set size:"+set.size());*/
+		System.out.println("set size:"+set.size());
 		
 	}
 	
@@ -65,16 +66,18 @@ public class SetTest {
 		
 		@Override
 		public boolean equals(Object obj) {
-			if(obj instanceof MyObj){
+			/* if(obj instanceof MyObj){
 				return ((MyObj) obj).value ==this.value;
 			}else {
 				return false;
-			}
+			} */
+			return false;
 		}
 		
 		@Override
 		public int hashCode() {
-			return name.hashCode();
+			//return name.hashCode();
+			return value;
 		}
 	}
 

@@ -22,5 +22,12 @@ public class InitTest{
         System.out.println(a);    //  a= 1,不是2
         // 父类先init
         System.out.println(Sub.b);
+
+
+        long i = 0;
+        switch(i) {
+            case 1:break;
+            default:break;
+        }
     }
 }

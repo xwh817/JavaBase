@@ -7,46 +7,53 @@ public class WaitTest {
 	 */
 	public static void main(String[] args) {
 		final WaitTest test = new WaitTest();
-		new Thread(){
+		new Thread() {
 			public void run() {
 				test.testWait();
 			};
 		}.start();
-		
-		new Thread(){
-			public void run() {
-				test.testWait();
-			};
-		}.start();
-		
 
-		new Thread(){
+		new Thread() {
 			public void run() {
-				test.testNotify();
+				test.testWait();
 			};
 		}.start();
+
+		new Thread() {
+			public void run() {
+				test.testNotify(2000);
+			};
+		}.start();
+		
 		
 		
 		
 		
 	}
 
+	private int count;
 	
 	public synchronized void testWait(){
-		System.out.println("something before");
+		count++;
+		System.out.println("something before, wait: " + count);
 		try {
 			this.wait();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		System.out.println("after");
+		System.out.println("after, " + count);
 		
 	}
 	
-	public synchronized void testNotify(){
+	public synchronized void testNotify(long timeAfter){
 		try {
-			Thread.sleep(3000);
-			this.notifyAll();
+			Thread.sleep(timeAfter);
+			count--;
+			this.notify();
+			
+			count--;
+			this.notify();
+			//this.notifyAll();
 		} catch (InterruptedException e){
 			e.printStackTrace();
 		}
