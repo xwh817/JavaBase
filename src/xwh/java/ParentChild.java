@@ -5,16 +5,20 @@ import java.io.IOException;
 
 public class ParentChild {
     
-    class Parent {
+    static class Parent {
         protected int fun() throws IOException{
             return 1;
         }
         protected Parent getObj(){
             return new Parent();
         }
+        
+        public void testClassName(){
+            System.out.println(super.getClass().getName());
+        }
     }
 
-    class Child extends Parent {
+    static class Child extends Parent {
 
         /**
          * 1. 子类方法的访问权限只能和父类相同或更大,不能更小。
@@ -31,5 +35,22 @@ public class ParentChild {
         public Child getObj() {
             return new Child();
         }
+
+        public void testClassName(){
+            // getClass是final的，super的和this的相同
+            System.out.println(super.getClass().hashCode());
+            System.out.println(this.getClass().hashCode());
+            System.out.println(super.getClass().getSimpleName());
+            System.out.println(this.getClass().getSuperclass().getSimpleName());
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Parent p = new Child();
+
+        //System.out.println(p.getClass().getName());
+        //System.out.println(p.getClass().getSuperclass().getName());
+        p.testClassName();
     }
 }

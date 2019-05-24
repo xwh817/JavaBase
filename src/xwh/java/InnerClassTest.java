@@ -4,16 +4,26 @@ package xwh.java;
  * 内部类
  *
  */
-public class InnerClass {
+public class InnerClassTest {
 
     // 栈溢出
     //private InnerClass instance = new InnerClass();
 
+    private String strTest;
+
 	public static void main(String[] args) {
-		InnerClass t = new InnerClass();
+		InnerClassTest t = new InnerClassTest();
         t.test();
 
         //t.instance.instance.test();
+
+        //System.out.println(t.test);
+        
+        InnerClass inner = t.new InnerClass();
+        inner.test();
+
+        t.testInner();
+        
 	}
     
     public void changeValue(Inner inner) {
@@ -50,4 +60,31 @@ public class InnerClass {
     interface Inner{
         void change(int a);
     }
+
+    class InnerClass{
+        public static final int test = 1;
+        public void test(){
+            System.out.println("InnerClass:" + test);
+        }
+    }
+
+    public void testInner(){
+        class InnerClass2{
+            public static final int test = 1;
+            public void test(){
+                System.out.println("InnerClass2:" + test);
+            }
+        }
+
+        InnerClass2 inner = new InnerClass2();
+        inner.test();
+    }
+
+    
+    public static class staticInner{
+        public void test(){
+            System.out.println(strTest);    // 静态内部类不可访问外部非static成员变量
+        }
+    }
+    
 }
