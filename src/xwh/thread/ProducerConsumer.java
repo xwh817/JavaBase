@@ -17,11 +17,11 @@ public class ProducerConsumer {
 
         isRunning = true;
 
-        for(int i=1; i<=3; i++) {
+        for(int i=1; i<=30; i++) {
             mProducers.add(new Producer("生产者" +i));
         }
 
-        for(int i=1; i<=3; i++) {
+        for(int i=1; i<=30; i++) {
             mConsumers.add(new Consumer("消费者" +i));
         }
 
@@ -56,26 +56,31 @@ public class ProducerConsumer {
             while (isRunning) {
                 try {
                     boolean isFull = false;
+
+                    /**
+                     * 这儿要读写仓库信息，因此要加锁。
+                     * 但是又不能拿着仓库的锁，然后在里面的生产者wait(),所以判断完isFull之后要结束该同步块。
+                     * 然后在后面去判断然后wait，不然会造成死锁。
+                     * wait会释放本对象的锁，不会释放其他对象的锁。因此要理解。
+                     */
                     synchronized(ProducerConsumer.class){
                         isFull = size>=MAX;
+                        if (isFull) {
+                            log(name + ": 仓库已满");
+    
+                            synchronized(Consumer.class) {
+                                Consumer.class.notifyAll();
+                            }
+                        } else {
+                            size++;
+                            log(name + ": 生产+1 -> " + size);
+                        }
                     }
 
                     if (isFull) {
-                        log(name + ": 仓库已满");
-
-                        synchronized(Consumer.class) {
-                            Consumer.class.notifyAll();
-                        }
-
                         synchronized(Producer.class) {
                             Producer.class.wait();
                         }
-                        
-                    }
-
-                    synchronized(ProducerConsumer.class){
-                        size++;
-                        log(name + ": 生产+1 -> " + size);
                     }
  
                     Thread.sleep(rdm.nextInt(3000)); // 生产间隔时间
@@ -100,23 +105,22 @@ public class ProducerConsumer {
                     boolean isEmpty = false;
                     synchronized(ProducerConsumer.class){
                         isEmpty = size<=0;
-                    }
-                    if (isEmpty) {
-                        log(name + ": 仓库空了");
-
-                        synchronized(Producer.class) {
-                            Producer.class.notifyAll();
+                        if (isEmpty) {
+                            log(name + ": 仓库空了");
+    
+                            synchronized(Producer.class) {
+                                Producer.class.notifyAll();
+                            }
+                        } else {
+                            size--;
+                            log(name + ": 消费-1 -> " + size);
                         }
-
+                    }
+                    
+                    if (isEmpty) {
                         synchronized(Consumer.class) {
                             Consumer.class.wait();
                         }
-
-                    }
-
-                    synchronized(ProducerConsumer.class){
-                        size--;
-                        log(name + ": 消费-1 -> " + size);
                     }
                 
                     Thread.sleep(rdm.nextInt(3000)); // 消费间隔
