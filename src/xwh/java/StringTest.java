@@ -9,5 +9,13 @@ public class StringTest{
         System.out.println(s1 == s2);
         System.out.println(s1 == s3);
         System.out.println(s1 == s3.intern());  // intern从常量池中去取。
+
+
+        s1 = "a";
+        s2 = s1 + "b";
+        s3 = "a" + "b";
+        String s4 = "ab";
+        System.out.println(s4 == s2);
+        System.out.println(s4 == s3);
     }
 }
