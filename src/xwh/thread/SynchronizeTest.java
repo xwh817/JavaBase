@@ -1,4 +1,4 @@
-package xwh.datastruct;
+package xwh.thread;
 
 public class SynchronizeTest {
 

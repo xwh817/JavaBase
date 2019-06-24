@@ -5,7 +5,10 @@ public class Password {
 
 	public static void main(String[] args) {
         String str = "VBLBOZBK";
-        System.out.println(str + ":" + getPwd(str));
+				System.out.println(str + ":" + getPwd(str));
+				
+				String test = "123";
+				System.out.println(test.split("\\|")[0]);
     }
     
     public static String getPwd(String str){
