@@ -26,13 +26,16 @@ public class Sort {
     System.out.println("Test");
     Sort test = new Sort();
 
-    print(test.testCase);
+    int[] target = test.testCase;
+    print(target);
 
     // int[] result = test.insertSort();
-    // int[] result = test.bubbleSort(test.testCase);
-    int[] result = test.selectSort(test.testCase);
+    // int[] result = test.bubbleSort(target);
+    //int[] result = test.selectSort(target);
 
-    print(result);
+    test.quickSort(target, 0, target.length-1);
+
+    print(target);
 
   }
 
@@ -99,18 +102,57 @@ public class Sort {
 
   /**
    * 快速排序 每次取一个基准点，将元素按大于\小于交换到基准点两边。
+   * 是对冒泡排序的改进。
    */
   public void quickSort(int[] target, int start, int end) {
-    if (start == end) {
+    if (start >= end) {
       return;
     }
-    // 这里以中间位置为基准点
-    int baseIndex = (start + end) / 2;
 
+    int pivot = quickSortPartition(target, start, end);
+
+
+    //System.out.println(start + "-" + end + "  ->    " + pivot);
+    print(target);
+
+    quickSort(target, start, pivot - 1);
+    quickSort(target, pivot + 1, end);
+    
   }
 
-  private void quickSortPartition(int[] target, int start, int end) {
+  // 一趟快排，把元素分到基准点两边。
+  private int quickSortPartition(int[] target, int start, int end) {
+    // 这里以中间位置为基准点
+    int baseItem = target[start];
 
+    int low = start;
+    int high = end;
+
+    int count = 0;
+    while(low < high) {
+      // 从后面开始找到一个小于基准点的元素，和基准点互换。
+      while(low < high && target[high] > baseItem) {
+        high--;
+      }
+      target[low] = target[high];
+
+      while(low < high && target[low] <= baseItem) {
+        low++;
+      }
+      target[high] = target[low];
+
+      System.out.println(low + "-" + high + "  ->    " + target[low] + "-" + target[high]);
+
+      if (count++ > 20) {
+        throw new RuntimeException("Stop");
+      }
+    }
+
+    target[low] = baseItem;
+
+    System.out.println(start + "-" + end + "  ->    " + low + "-" + high + "  ->    " + low);
+
+    return low;
   }
   
 }
