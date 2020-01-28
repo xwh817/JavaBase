@@ -101,7 +101,7 @@ public class Sort {
   }
 
   /**
-   * 快速排序 每次取一个基准点，将元素按大于\小于交换到基准点两边。
+   * 快速排序 每次取一个基准点(第一个元素)，将元素按大于\小于交换到基准点两边。
    * 是对冒泡排序的改进。
    */
   public void quickSort(int[] target, int start, int end) {
@@ -109,19 +109,6 @@ public class Sort {
       return;
     }
 
-    int pivot = quickSortPartition(target, start, end);
-
-
-    //System.out.println(start + "-" + end + "  ->    " + pivot);
-    print(target);
-
-    quickSort(target, start, pivot - 1);
-    quickSort(target, pivot + 1, end);
-    
-  }
-
-  // 一趟快排，把元素分到基准点两边。
-  private int quickSortPartition(int[] target, int start, int end) {
     // 这里以中间位置为基准点
     int baseItem = target[start];
 
@@ -130,12 +117,13 @@ public class Sort {
 
     int count = 0;
     while(low < high) {
-      // 从后面开始找到一个小于基准点的元素，和基准点互换。
+      // 从后面开始找到一个小于基准点的元素，换到基准点位置。
       while(low < high && target[high] > baseItem) {
         high--;
       }
       target[low] = target[high];
 
+      // 从前面开始找一个大于基准点的元素，换到之前空缺的high位置。
       while(low < high && target[low] <= baseItem) {
         low++;
       }
@@ -143,16 +131,23 @@ public class Sort {
 
       System.out.println(low + "-" + high + "  ->    " + target[low] + "-" + target[high]);
 
-      if (count++ > 20) {
+      // 防止调试过程中遇到死循环
+      if (++count > target.length) {
         throw new RuntimeException("Stop");
       }
     }
 
+    // 最后low位置填入基准点，实现了左右两边分组。
     target[low] = baseItem;
 
     System.out.println(start + "-" + end + "  ->    " + low + "-" + high + "  ->    " + low);
 
-    return low;
+    print(target);
+
+    quickSort(target, start, low - 1);
+    quickSort(target, low + 1, end);
+    
   }
+
   
 }
