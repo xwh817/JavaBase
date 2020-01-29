@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 //package xwh.algorithm;
 
 public class Sort {
@@ -5,20 +7,8 @@ public class Sort {
   private int[] testCase = { 9, 2, 5, 3, 7, 6, 1, 8, 4, 3, 1 };
 
   public static void print(int[] array) {
-    StringBuffer str = new StringBuffer("[");
-    if (array != null) {
-      boolean isFirst = true;
-      for (int item : array) {
-        if (isFirst) {
-          isFirst = false;
-        } else {
-          str.append(", ");
-        }
-        str.append(item);
-      }
-    }
-    str.append("]");
-
+    // 工具Arrays,打印数组。
+    String str = Arrays.toString(array);
     System.out.println(str);
   }
 
